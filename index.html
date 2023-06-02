@@ -60,6 +60,44 @@ function getIpAddress() {
 }
 
 // Вызов функции при загрузке страницы
-getIpAddress();</script>
+getIpAddress();
+    function checkVpnUsingAPI(ipAddress) {
+  const apiKey = '5652348a30c9c61f5461e35a5a9a25dd'; // Замени на свой API-ключ
+
+  const url = `https://api.ipapi.com/${ipAddress}?access_key=${apiKey}`;
+
+  axios.get(url)
+    .then(response => {
+      const data = response.data;
+      const isVpn = data.security.is_vpn;
+      console.log('Используется VPN:', isVpn);
+
+      if (isVpn) {
+        // Дополнительные действия, если используется VPN
+      }
+    })
+    .catch(error => {
+      console.log('Ошибка при проверке VPN', error);
+    });
+}
+
+// Функция для получения IP-адреса пользователя
+function getIpAddress() {
+  fetch("https://api.ipify.org/?format=json")
+    .then(response => response.json())
+    .then(data => {
+      const ipAddress = data.ip;
+      const ipAddressElement = document.getElementById("ipAddress");
+      ipAddressElement.textContent += ipAddress;
+
+      checkVpnUsingAPI(ipAddress); // Проверка IP-адреса на использование VPN
+    })
+    .catch(error => console.log(error));
+}
+
+// Вызов функции при загрузке страницы
+getIpAddress();
+
+    </script>
 </body>
 </html>
